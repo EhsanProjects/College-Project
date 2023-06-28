@@ -1,5 +1,5 @@
 from flask import Blueprint
-
+import models.student
 app = Blueprint("student", __name__)
 
 @app.route('/student')
