@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block header %}
+    <title>Admin Departments</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Under Construction</h1>
+
+    <table style="border: 1px solid black; ">
+    <tr>
+        <th>Department Name</th>
+    </tr>
+    {% for deptitem in departments %}
+        <tr>
+        <td>{{ deptitem.DepartmentName }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <form action="#" method="post">
+        <input type="text" name="DepartmentName" placeholder="Department Name"><br>
+        <input type="submit" value="Add">
+    </form>
+{% endblock %}
