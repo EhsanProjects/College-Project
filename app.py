@@ -2,6 +2,8 @@ from flask import Flask
 from flask_wtf.csrf import CSRFProtect
 from blueprints.general import app as general
 from blueprints.student import app as student
+from blueprints.instructor import app as instructor
+
 from blueprints.admin import app as admin
 import config
 import extentions
@@ -9,6 +11,8 @@ import extentions
 app = Flask(__name__)
 app.register_blueprint(general)
 app.register_blueprint(student)
+app.register_blueprint(instructor)
+
 app.register_blueprint(admin)
 
 

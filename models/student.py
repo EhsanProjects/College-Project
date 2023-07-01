@@ -7,5 +7,5 @@ class Student(db.Model):
     LastName = Column(VARCHAR(25), nullable=False)
     FirstName = Column(VARCHAR(25), nullable=False)
     EnrollmentDate = Column(DATETIME, nullable=False)
-    GraduationDate = Column(DATETIME, nullable=True)
+    GraduationDate = Column(DATE, nullable=True)
 

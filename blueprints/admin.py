@@ -59,3 +59,5 @@ def edit_department(DepartmentID):
         # db.session.add(dept)
         db.session.commit()
         return redirect(url_for("admin.edit_department", DepartmentID=DepartmentID))
+
+
