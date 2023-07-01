@@ -8,20 +8,21 @@
     <h1>Admin Departments</h1>
 
     <table style="border: 1px solid black; ">
-    <tr>
-        <th>Department Name |</th>
-        <th> Edit |</th>
-    </tr>
-    {% for deptitem in departments %}
         <tr>
-        <td>{{  deptitem.DepartmentName.title() }}</td>
-         <td><a href="/admin/dashboard/edit-department/{{ deptitem.DepartmentID }}">Edit</a></td>
+            <th>Department Name |</th>
+            <th> Edit |</th>
         </tr>
-    {% endfor %}
+        {% for deptitem in departments %}
+            <tr>
+                <td>{{ deptitem.DepartmentName.title() }}</td>
+                <td><a href="/admin/dashboard/edit-department/{{ deptitem.DepartmentID }}">Edit</a></td>
+            </tr>
+        {% endfor %}
     </table>
     <br>
 
     <form action="#" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="text" name="DepartmentName" placeholder="Department Name"><br>
         <input type="submit" value="Add">
     </form>
