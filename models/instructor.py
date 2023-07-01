@@ -2,7 +2,6 @@ from sqlalchemy import *
 from decimal import Decimal
 from extentions import db
 
-
 class Instructor(db.Model):
     __tablename__ = "instructors"
     InstructorID = Column(INTEGER, primary_key=True)

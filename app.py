@@ -3,6 +3,9 @@ from flask_wtf.csrf import CSRFProtect
 from blueprints.general import app as general
 from blueprints.student import app as student
 from blueprints.instructor import app as instructor
+from blueprints.course import app as course
+from blueprints.studentcourse import app as studentcourse
+
 
 from blueprints.admin import app as admin
 import config
@@ -12,7 +15,8 @@ app = Flask(__name__)
 app.register_blueprint(general)
 app.register_blueprint(student)
 app.register_blueprint(instructor)
-
+app.register_blueprint(course)
+app.register_blueprint(studentcourse)
 app.register_blueprint(admin)
 
 
