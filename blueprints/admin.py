@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, abort
+from flask import Blueprint, render_template, request, session, redirect, abort, url_for
 import config
 from models.department import Department
 from extentions import db
@@ -40,8 +40,22 @@ def departments():
     else:
         DepartmentName = request.form.get('DepartmentName', None)
 
-        dept = Department(DepartmentName=DepartmentName)
+        dept = Department(DepartmentName=DepartmentName.title())
 
         db.session.add(dept)
         db.session.commit()
         return "Done"
+
+
+@app.route('/admin/dashboard/edit-department/<DepartmentID>', methods=["GET", "POST"])
+def edit_department(DepartmentID):
+    department = Department.query.filter(Department.DepartmentID == DepartmentID).first_or_404()
+    if request.method == "GET":
+        return render_template("admin/edit-department.html", department=department)
+    else:
+        DepartmentName = request.form.get('DepartmentName', None)
+        department.DepartmentName = DepartmentName.title()
+
+        # db.session.add(dept)
+        db.session.commit()
+        return redirect(url_for("admin.edit_department", DepartmentID=DepartmentID))

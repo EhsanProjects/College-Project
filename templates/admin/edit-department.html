@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block header %}
+    <title>Admin: Edit --> Department</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin: Edit --> Department</h1>
+
+
+
+    <form action="#" method="post">
+        <input type="text" name="DepartmentName" value="{{ department.DepartmentName.title() }}" vaplaceholder="Department Name"><br>
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}
