@@ -1,12 +1,12 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 app = Blueprint("general", __name__)
 
 @app.route('/')
 def main():  # put application's code here
-    return 'This is main page!'
+    return  render_template('main.html')
 
 
 @app.route('/help')
 def help():  # put application's code here
-    return 'Help page!'
+    return  render_template('help.html')
