@@ -7,12 +7,10 @@
 
     <h1>Admin: Edit --> Department</h1>
 
-
-
     <form action="#" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="text" name="DepartmentName" value="{{ department.DepartmentName.title() }}"
-               vaplaceholder="Department Name"><br>
+               placeholder="Department Name"><br>
         <input type="submit" value="Save">
     </form>
 {% endblock %}

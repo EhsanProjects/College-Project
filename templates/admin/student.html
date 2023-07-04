@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block header %}
+    <title>Admin Students</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin Students</h1>
+
+    <table style="border: 1px solid black; ">
+        <tr>
+            <th>Student Name |</th>
+            <th> Edit |</th>
+        </tr>
+        {% for stuitem in students %}
+            <tr>
+                <td>{{ stuitem.LastName.title() }}</td>
+                <td>{{ stuitem.FirstName.title() }}</td>
+                 <td>{{ stuitem.Major.title() }}</td>
+                <td>{{ stuitem.EnrollmentDate }}</td>
+                <td>{{ stuitem.GraduationDate }}</td>
+                <td><a href="/admin/dashboard/edit-student/{{ stuitem.StudentID }}">Edit</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+
+    <form action="#" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="text" name="LastName" placeholder="LastName"><br>
+        <input type="text" name="FirstName" placeholder="FirstName"><br>
+        <input type="text" name="Major" placeholder="Major"><br>
+        <input type="text" name="Enrollment" placeholder="Enrollment"><br>
+        <input type="text" name="Graduation" placeholder=""><br>
+
+        <input type="submit" value="Add Student">
+    </form>
+{% endblock %}

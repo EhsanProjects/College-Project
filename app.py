@@ -5,7 +5,7 @@ from blueprints.student import app as student
 from blueprints.instructor import app as instructor
 from blueprints.course import app as course
 from blueprints.studentcourse import app as studentcourse
-
+from blueprints.studentinfo import app as studentinfo
 
 from blueprints.admin import app as admin
 import config
@@ -18,7 +18,7 @@ app.register_blueprint(instructor)
 app.register_blueprint(course)
 app.register_blueprint(studentcourse)
 app.register_blueprint(admin)
-
+app.register_blueprint(studentinfo)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = config.SQLALCHEMY_DATABASE_URI
 app.config['SECRET_KEY'] = config.SECRET_KEY

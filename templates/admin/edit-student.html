@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block header %}
+    <title>Admin: Edit --> Student</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin: Edit --> Student</h1>
+
+    <form action="#" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="text" name="LastName" value="{{ student.LastName.title() }}" placeholder="Last Name"><br>
+        <input type="text" name="FirstName" value="{{ student.FirstName.title() }}" placeholder="First Name"><br>
+        <input type="text" name="Major" value="{{ student.Major.title() }}" placeholder="Major"><br>
+        <input type="text" name="EnrollmentDate" value="{{ student.EnrollmentDate }}" placeholder="EnrollmentDate"><br>
+        <input type="text" name="GraduationDate" value="{{ student.GraduationDate }}" placeholder="GraduationDate"><br>
+
+        <input type="submit" value="Save Student">
+    </form>
+{% endblock %}
