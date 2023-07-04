@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block header %}
+    <title>Admin: Edit --> Course</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin: Edit --> Course</h1>
+
+    <form action="#" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="text" name="CourseNumber" value="{{ course.CourseNumber }}" placeholder="Course Number"><br>
+        <input type="text" name="CourseDescription" value="{{ course.CourseDescription.title() }}" placeholder="Course Description"><br>
+        <input type="text" name="CourseUnits" value="{{ course.CourseUnits }}" placeholder="CourseUnits"><br>
+        <input type="text" name="DepartmentID" value="{{ course.DepartmentID }}" placeholder="Department ID"><br>
+        <input type="text" name="InstructorID" value="{{ course.InstructorID }}" placeholder="Instructor ID"><br>
+
+        <input type="submit" value="Save Student">
+    </form>
+{% endblock %}

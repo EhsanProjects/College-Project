@@ -9,13 +9,23 @@
 
     <table style="border: 1px solid black; ">
         <tr>
-            <th>Courses info |</th>
+            <th>Courses Number |</th>
+            <th>Courses Description |</th>
+            <th>Courses Units |</th>
+            <th>Courses Department ID |</th>
+            <th>Courses Instructor ID |</th>
+
+
             <th> Edit |</th>
         </tr>
-        {% for deptitem in departments %}
+        {% for coursetem in courses %}
             <tr>
-                <td>{{ deptitem.DepartmentName.title() }}</td>
-                <td><a href="/admin/dashboard/edit-department/{{ deptitem.DepartmentID }}">Edit</a></td>
+                <td>{{ coursetem.CourseNumber }}</td>
+                <td>{{ coursetem.CourseDescription.title() }}</td>
+                 <td>{{ coursetem.CourseUnits }}</td>
+                <td>{{ coursetem.DepartmentID }}</td>
+                <td>{{ coursetem.InstructorID }}</td>
+                <td><a href="/admin/dashboard/edit-course/{{ coursetem.CourseID }}">Edit</a></td>
             </tr>
         {% endfor %}
     </table>
@@ -23,7 +33,11 @@
 
     <form action="#" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="text" name="DepartmentName" placeholder="Department Name"><br>
+        <input type="text" name="CourseNumber" placeholder="Course Number"><br>
+        <input type="text" name="CourseDescription" placeholder="CourseDescription"><br>
+        <input type="text" name="CourseUnits" placeholder="Course Units"><br>
+        <input type="text" name="DepartmentID" placeholder="Department ID"><br>
+        <input type="text" name="InstructorID" placeholder="Instructor ID"><br>
         <input type="submit" value="Add">
     </form>
 {% endblock %}

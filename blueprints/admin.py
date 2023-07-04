@@ -79,7 +79,6 @@ def students():
         FirstName = request.form.get('FirstName', None)
         Major = request.form.get('Major', None)
         EnrollmentDate = request.form.get('EnrollmentDate')
-        #EnrollmentDate ='01-01-2021'
         GraduationDate = request.form.get('GraduationDate')
 
         stu = Student(LastName=LastName.title(), FirstName=FirstName.title(), Major=Major.title(),
@@ -120,9 +119,38 @@ def courses():
         return render_template("admin/course.html", courses=courses)
     else:
         CourseNumber = request.form.get('CourseNumber', None)
+        CourseDescription = request.form.get('CourseDescription', None)
+        CourseUnits = request.form.get('CourseUnits', None)
+        DepartmentID = request.form.get('DepartmentID')
+        InstructorID = request.form.get('InstructorID')
 
-        cors = Course(CourseNumber=CourseNumber.title())
+        cours = Course(CourseNumber=CourseNumber, CourseDescription=CourseDescription.title(), CourseUnits=CourseUnits,
+                      DepartmentID=DepartmentID, InstructorID=InstructorID)
 
-        db.session.add(cors)
+        db.session.add(cours)
         db.session.commit()
         return "Done"
+
+
+@app.route('/admin/dashboard/edit-course/<CourseID>', methods=["GET", "POST"])
+def edit_course(CourseID):
+    course = Course.query.filter(Course.CourseID == CourseID).first_or_404()
+    if request.method == "GET":
+        return render_template("admin/edit-course.html", course=course)
+    else:
+        CourseNumber = request.form.get('CourseNumber', None)
+        CourseDescription = request.form.get('CourseDescription', None)
+        CourseUnits = request.form.get('CourseUnits', None)
+        DepartmentID = request.form.get('DepartmentID')
+        InstructorID = request.form.get('InstructorID')
+
+        course.CourseNumber = CourseNumber
+        course.CourseDescription = CourseDescription
+        course.CourseUnits = CourseUnits
+        course.DepartmentID = DepartmentID
+        course.InstructorID = InstructorID
+        # db.session.add(dept)
+        db.session.commit()
+        #return "Information Edited."
+        return redirect(url_for("admin.edit_course", CourseID=CourseID))
+
