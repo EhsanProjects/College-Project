@@ -9,24 +9,31 @@
 
     <table style="border: 1px solid black; ">
         <tr>
-            <th>Student Name |</th>
+            <th> Last Name |</th>
+            <th> First Name |</th>
+            <th> Major |</th>
+            <th> EnrollmentDate |</th>
+            <th> GraduationDate |</th>
+            <th> Photo |</th>
             <th> Edit |</th>
         </tr>
         {% for stuitem in students %}
             <tr>
                 <td>{{ stuitem.LastName.title() }}</td>
                 <td>{{ stuitem.FirstName.title() }}</td>
-                 <td>{{ stuitem.Major.title() }}</td>
+                <td>{{ stuitem.Major.title() }}</td>
                 <td>{{ stuitem.EnrollmentDate }}</td>
                 <td>{{ stuitem.GraduationDate }}</td>
+                <td><img style="width: 100px"  src="/static/img/{{ stuitem.StudentID }}.jpg"></td>
                 <td><a href="/admin/dashboard/edit-student/{{ stuitem.StudentID }}">Edit</a></td>
             </tr>
         {% endfor %}
     </table>
     <br>
 
-    <form action="#" method="post">
+    <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <label>Image : </label><input type="file" name="img"><br>
         <input type="text" name="LastName" placeholder="LastName"><br>
         <input type="text" name="FirstName" placeholder="FirstName"><br>
         <input type="text" name="Major" placeholder="Major"><br>

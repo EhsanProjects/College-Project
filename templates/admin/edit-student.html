@@ -6,15 +6,15 @@
 {% block body %}
 
     <h1>Admin: Edit --> Student</h1>
-
-    <form action="#" method="post">
+    <td><img style="width: 100px"  src="/static/img/{{ student.StudentID }}.jpg"></td>
+    <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="text" name="CourseNumber" value="{{ student.CourseNumber }}" placeholder="CourseNumber"><br>
-        <input type="text" name="CourseDescription" value="{{ student.CourseDescription.title() }}" placeholder="CourseDescription"><br>
-        <input type="text" name="CourseUnits" value="{{ student.CourseUnits }}" placeholder="CourseUnits"><br>
-        <input type="text" name="DepartmentID" value="{{ student.DepartmentID }}" placeholder="DepartmentID"><br>
-        <input type="text" name="InstructorID" value="{{ student.InstructorID }}" placeholder="InstructorID"><br>
-
-        <input type="submit" value="Save Course">
+        <input type="text" name="LastName" value="{{ student.LastName.title() }}" placeholder="Last Name"><br>
+        <input type="text" name="FirstName" value="{{ student.FirstName.title() }}" placeholder="First Name"><br>
+        <input type="text" name="Major" value="{{ student.Major.title() }}" placeholder="Major"><br>
+        <input type="text" name="EnrollmentDate" value="{{ student.EnrollmentDate }}" placeholder="EnrollmentDate"><br>
+        <input type="text" name="GraduationDate" value="{{ student.GraduationDate }}" placeholder="GraduationDate"><br>
+        <label>Image : </label><input type="file" name="img"><br>
+        <input type="submit" value="Save Student">
     </form>
 {% endblock %}

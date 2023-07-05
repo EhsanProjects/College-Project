@@ -80,12 +80,13 @@ def students():
         Major = request.form.get('Major', None)
         EnrollmentDate = request.form.get('EnrollmentDate')
         GraduationDate = request.form.get('GraduationDate')
-
+        file = request.files.get('img', None)
         stu = Student(LastName=LastName.title(), FirstName=FirstName.title(), Major=Major.title(),
                       EnrollmentDate=EnrollmentDate, GraduationDate=GraduationDate)
 
         db.session.add(stu)
         db.session.commit()
+        file.save(f'static/img/{stu.StudentID}.jpg')
         return "Done"
 
 
@@ -100,7 +101,7 @@ def edit_student(StudentID):
         Major = request.form.get('Major', None)
         EnrollmentDate = request.form.get('EnrollmentDate')
         GraduationDate = request.form.get('GraduationDate')
-
+        file = request.files.get('img', None)
         student.LastName = LastName
         student.FirstName = FirstName
         student.Major = Major
@@ -108,6 +109,8 @@ def edit_student(StudentID):
         student.GraduationDate = GraduationDate
         # db.session.add(dept)
         db.session.commit()
+        if file!= None :
+            file.save(f'static/img/{student.StudentID}.jpg')
         #return "Information Edited."
         return redirect(url_for("admin.edit_student", StudentID=StudentID))
 
@@ -154,3 +157,30 @@ def edit_course(CourseID):
         #return "Information Edited."
         return redirect(url_for("admin.edit_course", CourseID=CourseID))
 
+@app.route('/admin/dashboard/instructors', methods=["GET", "POST"])
+def instructor():
+    if request.method == "GET":
+        #instructor = Instructor.query.all()
+        #return render_template("admin/instructor.html", instructor=instructor)
+        # Create a new student object
+        new_student = Instructor(FirstName='John1', LastName='Doe1')
+        db.session.add(new_student)
+
+        new_student = Instructor(FirstName='John2', LastName='Doe2')
+        # Add the new student to the session
+        db.session.add(new_student)
+
+        # Commit the session to save the changes to the database
+        db.session.commit()
+        return "Instructor Added. "
+        return "No Data to show1"
+    else:
+        # Create a new student object
+        new_student = Instructor(FirstName='John', LastName='Doe', HireDate='2023-06-27')
+
+        # Add the new student to the session
+        db.session.add(new_student)
+
+        # Commit the session to save the changes to the database
+        db.session.commit()
+        return "Instructor Added2. "
