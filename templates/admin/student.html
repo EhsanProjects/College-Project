@@ -1,45 +1,89 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
+
 {% block header %}
     <title>Admin Students</title>
+
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include jQuery UI from CDN -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
 {% endblock %}
 
 {% block body %}
 
     <h1>Admin Students</h1>
 
-    <table style="border: 1px solid black; ">
-        <tr>
-            <th> Last Name |</th>
-            <th> First Name |</th>
-            <th> Major |</th>
-            <th> EnrollmentDate |</th>
-            <th> GraduationDate |</th>
-            <th> Photo |</th>
-            <th> Edit |</th>
-        </tr>
-        {% for stuitem in students %}
-            <tr>
-                <td>{{ stuitem.LastName.title() }}</td>
-                <td>{{ stuitem.FirstName.title() }}</td>
-                <td>{{ stuitem.Major.title() }}</td>
-                <td>{{ stuitem.EnrollmentDate }}</td>
-                <td>{{ stuitem.GraduationDate }}</td>
-                <td><img style="width: 100px"  src="/static/img/{{ stuitem.StudentID }}.jpg"></td>
-                <td><a href="/admin/dashboard/edit-student/{{ stuitem.StudentID }}">Edit</a></td>
-            </tr>
-        {% endfor %}
-    </table>
-    <br>
+    <form  action="/admin/dashboard/students" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
 
-    <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <label>Image : </label><input type="file" name="img"><br>
-        <input type="text" name="LastName" placeholder="LastName"><br>
+        <label>Image : </label><input type="file" name="img" placeholder="Image1"><br>
+
         <input type="text" name="FirstName" placeholder="FirstName"><br>
-        <input type="text" name="Major" placeholder="Major"><br>
-        <input type="text" name="Enrollment" placeholder="Enrollment"><br>
-        <input type="text" name="Graduation" placeholder=""><br>
+        <input type="text" name="LastName" placeholder="LastName"><br>
+        <label for="mjrSelect">Major</label>
+        <select id="mjrSelect" name="MajorID">
+            <option></option>
+            {% for mjritem in majors %}
+                <option value="{{ mjritem[0] }}">
+                    {{ mjritem[1] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="text" name="Enrollment" placeholder="Enrollment" hidden="true"><br>
+        <input type="text" name="GraduationDate" id="graduationDate" placeholder="Graduation Date" readonly><br>
+
+
+        <input type="text" name="Dob" id="dobpicker" placeholder="Date Of Birth"><br>
+
+
+        <input type="text" name="Phone" placeholder="Phone"><br>
+        <input type="text" name="Address" placeholder="Address"><br>
+        <input type="text" name="City" placeholder="City"><br>
+        <input type="text" name="State" placeholder="State"><br>
+        <input type="text" name="Zipcode" placeholder="Zipcode"><br>
+        <input type="text" name="Email" value="" placeholder="Email"><br>
 
         <input type="submit" value="Add Student">
     </form>
+<div id="errorContainer" style="color: red;"></div>
+<script>
+         // Validate the form before submission
+    function validateForm() {
+        var LastName = document.querySelector('input[name="LastName"]');
+        var FirstName = document.querySelector('input[name="FirstName"]');
+        var MajorID = document.querySelector('#mjrSelect');
+        var Enrollment = document.querySelector('#Enrollment');
+        var Dob = document.querySelector('#Dob');
+        var Phone = document.querySelector('#Phone');
+        var Address = document.querySelector('input[name="Address"]');
+        var City = document.querySelector('input[name="City"]');
+        var State = document.querySelector('#State');
+        var Zipcode = document.querySelector('#Zipcode');
+        var Email = document.querySelector('input[name="Email"]');
+        // Check if any fields are empty or invalid
+        if (!LastName.value || !FirstName.value || !MajorID.value || !Enrollment.value || !Dob.value || !Phone.value || !Address.value || !City.value || !State.value || !Zipcode.value || !Email.value) {
+            alert("Please fill in all the fields.");
+            return false; // Prevent form submission
+        }
+
+
+
+        return true; // Allow form submission
+    }
+
+        // Initialize datepicker on the DOB input field
+        $(document).ready(function() {
+            // Initialize datepicker on the DOB input field
+            $("#dobpicker").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0"
+            });
+        });
+    </script>
 {% endblock %}

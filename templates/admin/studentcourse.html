@@ -1,0 +1,145 @@
+{#from models. department import Department#}
+{#from models. course import Course#}
+{#{% extends 'base.html' %}#}
+{% block header %}
+    <title>Admin Students Courses page</title>
+{% endblock %}
+
+{% block body %}
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+
+    <script>
+        $(document).ready(function (objButton) {
+            $(".hidediv").click(function (objButton) {
+                $(".divdemo").hide("slow");
+            });
+
+
+            $(".showdiv").click(function (objButton) {
+                $(".divdemo").show(1000);
+                alert(objButton.value);
+
+
+            });
+
+        });
+
+    </script>
+
+    <h1>Admin Students-Courses</h1>
+    <style>
+        .divdemo {
+            width: 100px;
+            height: 100px;
+            background-color: #0780BA;
+            color: #fff;
+            padding: 200px;
+            font-size: 18px;
+            opacity: 1.0;
+            display: none;
+            z-index: 100;
+            position: absolute;
+        }
+
+        popup-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+        }
+
+    </style>
+    <table style="border: 1px solid black; ">
+        <tr>
+            <th> Student ID |</th>
+            <th> Last Name |</th>
+            <th> First Name |</th>
+            <th> Major |</th>
+            <th> EnrollmentDate |</th>
+            <th> GraduationDate |</th>
+            <th> Photo |</th>
+            <th> Register Course |</th>
+        </tr>
+
+        {% for stuitem in studentcourses %}
+            <tr>
+                <td>{{ stuitem.StudentID }}</td>
+                <td>{{ stuitem.LastName.title() }}</td>
+                <td>{{ stuitem.FirstName.title() }}</td>
+                <td>{{ stuitem.MajorID }}</td>
+                <td>{{ stuitem.EnrollmentDate }}</td>
+                <td>{{ stuitem.GraduationDate }}</td>
+
+                <td><img style="width: 100px" src="/static/img/{{ stuitem.StudentID }}.jpg"></td>
+
+                <td>
+                    <p>
+                    <form method="post" action="/admin/dashboard/studentcourses" enctype="multipart/form-data">
+                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="hidden" name="sid" value="{{ stuitem.StudentID }}">
+                        <label>Course Number | Course Name | Credit Hours | Department | Instructor </label>
+                        <select id="course" name="cid">
+                            <option></option>
+{#                            {% for courseitem in courses %}#}
+                                {#  course = Course.query.filter(Course.CourseID == courseitem).first_or_404()#}
+                                {#  department = Department.query.filter(Department.DepartmentID ==#}
+                                {#   course.DepartmentID).first_or_404()#}
+                                {% for deptitem in departments %}
+                                    {#                                    department = Department.query.filter(Department.DepartmentID ==#}
+                                    {#                                    courseitem.DepartmentID).first_or_404()#}
+                                    <option value="{{ deptitem[0] }}">{{ deptitem[1] }} -----------> {{     deptitem[2] }}
+                                        |   {{      deptitem[3] }} credit hours |    {{     deptitem[4] }} Department
+                                        |   {{      deptitem[5] }}  {{      deptitem[6] }}
+                                    </option>
+                                    {#                                       <tr>#}
+                                    {#                                            <td>{{ row[0] }}</td>#}
+                                    {#                                            <td>{{ row[1] }}</td>#}
+                                    {#                                        </tr>#}
+                                {% endfor %}
+
+                                {#                                print(department.DepartmentID)#}
+                                {#                                <option value="{{ courseitem.CourseID }}">{{ courseitem.CourseNumber }}#}
+                                {#                                    --> {{ courseitem.CourseDescription }} : {{ courseitem.CourseUnits }} credit#}
+                                {#                                    hours | {{ deptitem.DepartmentName }}#}
+                                {#                                </option>#}
+
+{#                            {% endfor %}#}
+                        </select>
+
+                        <input type="submit"  value="Add Course">
+                    </form>
+                    <br><br>
+{#                    <button class="hidediv">Hide div</button>#}
+{#                    <button class="showdiv"#}
+{#                            value="{{ stuitem.StudentID }}">{{ stuitem.StudentID }} </button>#}
+
+                    </p>
+
+                </td>
+{#                <td><a href="#/{{ stuitem.StudentID }}">Register Course </a></td>#}
+
+            </tr>
+        {% endfor %}
+        <div class="divdemo">
+
+            <form action="#" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input type="text" name="Date" placeholder="Date"><br>
+                <input type="text" name="Phone" placeholder="Phone"><br>
+                <input type="text" name="Address" placeholder="Address"><br>
+                <input type="text" name="City" placeholder="City"><br>
+                <input type="text" name="State" placeholder="State"><br>
+                <input type="text" name="Zipcode" placeholder="Zipcode"><br>
+
+                <input type="text" name="Email2" value="" placeholder={{ A }}><br>
+                <input type="text" name="StudentID" value="{{ showdiv }}"
+                       placeholder="{{ studentcourses.StudentID }}"><br>
+
+                <input type="submit" value="Add Student Information">
+            </form>
+        </div>
+
+
+    </table>
+    <br>
+
+{% endblock %}

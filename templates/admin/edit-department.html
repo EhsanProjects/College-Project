@@ -1,4 +1,3 @@
-{% extends 'base.html' %}
 {% block header %}
     <title>Admin: Edit --> Department</title>
 {% endblock %}
@@ -7,10 +6,26 @@
 
     <h1>Admin: Edit --> Department</h1>
 
-    <form action="#" method="post">
+    <form action="/admin/dashboard/edit-department/{{ department.DepartmentID }}" method="post" onsubmit="return validateForm();">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="text" name="DepartmentName" value="{{ department.DepartmentName.title() }}"
                placeholder="Department Name"><br>
         <input type="submit" value="Save">
     </form>
+    <script>
+    function validateForm() {
+
+         var DepartmentName = document.querySelector('input[name="DepartmentName"]');
+
+        // Check if any fields are empty or invalid
+        if (!DepartmentName.value ) {
+            alert("Please fill in Department Name field.");
+            return false; // Prevent form submission
+        }
+
+
+
+        return true; // Allow form submission
+    }
+    </script>
 {% endblock %}

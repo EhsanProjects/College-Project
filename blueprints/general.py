@@ -4,7 +4,7 @@ app = Blueprint("general", __name__)
 
 @app.route('/')
 def main():  # put application's code here
-    return  render_template('main.html')
+    return  render_template('index.html')
 
 
 @app.route('/help')

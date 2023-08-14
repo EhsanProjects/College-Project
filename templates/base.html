@@ -2,12 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
-    {% block header %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% block header %}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {% endblock %}
+
 </head>
-<body>
-{% block body %}{% endblock %}
+<header>
+    <h1>My College</h1>
+</header>
+
+
+<main>
+
+
+  {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    {% if "Success" in message %}
+                        <div class="flash-message flash-success"><tr><td>&#10004; </tr></td> {{ message }}</div>
+                    {% elif "Error" in message %}
+                        <div class="flash-message flash-error"><tr><td>&#10060; </tr></td> {{ message }}</div>
+                    {% else %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <script>
+                // Automatically clear flashed messages after 5 seconds
+                setTimeout(function() {
+                    var flashMessages = document.querySelectorAll('.flash-message');
+                    flashMessages.forEach(function(message) {
+                        message.remove();
+                    });
+                }, 5000); // 5000 milliseconds = 5 seconds
+            </script>
+        {% endif %}
+    {% endwith %}
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadPage(page) {
+            $.ajax({
+                url: `/admin/dashboard/${page}`, // Update the URL to match your endpoint for each page
+                type: "GET",
+                dataType: "html",
+                success: function (response) {
+                    $("#newsColumn").html(response);
+                },
+                error: function (error) {
+                    console.error("Error loading page:", error);
+                }
+            });
+        }
+    </script>
+
+
+</main>
+{% block body %}
+
+
+
+{% endblock %}
 </body>
 </html>

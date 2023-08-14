@@ -1,20 +1,98 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
 {% block header %}
     <title>Admin: Edit --> Course</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 
 {% block body %}
 
     <h1>Admin: Edit --> Course</h1>
 
-    <form action="#" method="post">
+
+
+    <script>
+    function myFunction(val) {
+        {#document.getElementById("deptSelect").style.color = "red";#}
+        {#alert(val);#}
+        // Make an AJAX request to the server-side endpoint
+        fetch('/admin/dashboard/instructors/' + val)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.results);
+
+            // Update the instructor select options
+            var instructorSelect = document.getElementById("demo");
+            instructorSelect.innerHTML = ""; // Clear existing options
+
+            // Add the instructor options based on the query results
+            data.results.forEach(function (instructor) {
+                var option = document.createElement("option");
+                option.value = instructor.InstructorID;
+
+                // Separate firstname and lastname
+                var firstname = instructor.FirstName;
+                var lastname = instructor.LastName;
+
+                option.text = firstname + " " + lastname;
+
+                instructorSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error(error);
+            // Handle any errors
+        });
+    }
+</script>
+
+
+    <form action="/admin/dashboard/edit-course/{{ course.CourseID }}" method="post" onsubmit="return validateForm();">
+{#    <form action="#" method="post">#}
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="text" name="CourseNumber" value="{{ course.CourseNumber }}" placeholder="Course Number"><br>
-        <input type="text" name="CourseDescription" value="{{ course.CourseDescription.title() }}" placeholder="Course Description"><br>
-        <input type="text" name="CourseUnits" value="{{ course.CourseUnits }}" placeholder="CourseUnits"><br>
-        <input type="text" name="DepartmentID" value="{{ course.DepartmentID }}" placeholder="Department ID"><br>
-        <input type="text" name="InstructorID" value="{{ course.InstructorID }}" placeholder="Instructor ID"><br>
+        <label>Course Number:</label><input type="text" id="CourseNumber" name="CourseNumber" value="{{ course.CourseNumber }}" placeholder="Course Number"><br>
+        <label>Course Name:</label><input type="text" id="CourseDescription" name="CourseDescription" value="{{ course.CourseDescription.title() }}"
+               placeholder="Course Description"><br>
+        <label>Credit Hours:</label><input type="text" id="CourseUnits" name="CourseUnits" value="{{ course.CourseUnits }}" placeholder="CourseUnits"><br>
+        <label>Department</label>
+        <select id="deptSelect" name="DepartmentID" onchange="myFunction(this.value)">
+            <option></option>
+            {% for deptitem in departments %}
+                <option value="{{ deptitem[0] }}">
+                    {{ deptitem[1] }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label>Instructor</label>
+        <select id="demo" name="InstructorID">
+            <option></option>
+            {% for institem in instructors %}
+                <option value="{{ institem[0] }}">
+                    {{ institem[1] }} {{ institem[2] }}
+                </option>
+            {% endfor %}
+        </select><br>
 
         <input type="submit" value="Save Student">
     </form>
+
+    <script>
+        function validateForm() {
+            var courseNumber = document.querySelector('#CourseNumber');
+            var courseDescription = document.querySelector('#CourseDescription');
+            var courseUnits = document.querySelector('#CourseUnits');
+            var departmentID = document.querySelector('#deptSelect');
+            var instructorID = document.querySelector('#demo');
+
+            // Check if any fields are empty or invalid
+            if (!courseNumber.value || !courseDescription.value || !courseUnits.value || !departmentID.value || !instructorID.value) {
+                alert("Please fill in all the fields.");
+                return false; // Prevent form submission
+            }
+
+
+
+            return true; // Allow form submission
+        }
+    </script>
 {% endblock %}

@@ -6,7 +6,6 @@ from blueprints.instructor import app as instructor
 from blueprints.course import app as course
 from blueprints.studentcourse import app as studentcourse
 from blueprints.studentinfo import app as studentinfo
-
 from blueprints.admin import app as admin
 import config
 import extentions
@@ -28,6 +27,5 @@ csrf = CSRFProtect(app)
 
 with app.app_context():
     extentions.db.create_all()
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

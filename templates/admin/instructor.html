@@ -1,0 +1,52 @@
+{#{% extends 'base.html' %}#}
+
+{% block header %}
+    <title>Instructor Management</title>
+{% endblock %}
+
+{% block body %}
+    <h1>Instructor Management</h1>
+
+    <table>
+        <tr>
+            <th>Instructor ID</th>
+
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Status</th>
+            <th>Department Chairman</th>
+            <th>Hire Date</th>
+            <th>Annual Salary</th>
+            <th>Department ID</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for instructor in instructors %}
+            <tr>
+                <td>{{ instructor.InstructorID }}</td>
+
+                <td>{{ instructor.FirstName }}</td>
+                <td>{{ instructor.LastName }}</td>
+                <td>{{ instructor.Status }}</td>
+                <td>{{ "Yes" if instructor.DepartmentChairman else "No" }}</td>
+                <td>{{ instructor.HireDate }}</td>
+                <td>{{ instructor.AnnualSalary }}</td>
+                <td>{{ instructor.DepartmentID }}</td>
+                <td>
+{#                    <a href="{{ url_for('admin.edit_instructor', id=instructor.InstructorID) }}">Edit</a>#}
+                    <form method="post" action="{{ url_for('admin.delete_instructor') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="hidden" name="InstructorID" value="{{ instructor.InstructorID }}">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form method="post" action="{{ url_for('admin.instructor') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+        <input type="submit" value="Add a list of Instructors">
+    </form>
+{#    <a href="{{ url_for('admin.instructor') }}">Add Instructor</a>#}
+{% endblock %}

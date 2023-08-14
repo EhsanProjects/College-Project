@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+</head>
+<header>
+</header>
+<main>
+        <input type="hidden" name="id" value="{{ page }}"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadPage(page) {
+            $.ajax({
+                url: `/admin/dashboard/${page}`, // Update the URL to match your endpoint for each page
+                type: "GET",
+                dataType: "html",
+                success: function (response) {
+                    $("#newsColumn").html(response);
+                },
+                error: function (error) {
+                    console.error("Error loading page:", error);
+                }
+            });
+        }
+    </script>
+</main>
+</body>
+</html>

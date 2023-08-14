@@ -1,20 +1,113 @@
-{% extends 'base.html' %}
+{#{% extends 'base.html' %}#}
 {% block header %}
     <title>Admin: Edit --> Student</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 {% endblock %}
 
 {% block body %}
 
     <h1>Admin: Edit --> Student</h1>
-    <td><img style="width: 100px"  src="/static/img/{{ student.StudentID }}.jpg"></td>
-    <form action="#" method="post" enctype="multipart/form-data">
+    <td><img style="width: 100px" src="/static/img/{{ student.StudentID }}.jpg"></td><br>
+    <label>New Image : </label><input type="file" name="img"><br>
+
+    <form action="/admin/dashboard/edit-student/{{ student.StudentID }}" method="post"
+          onsubmit="return validateForm();">
+
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="text" name="LastName" value="{{ student.LastName.title() }}" placeholder="Last Name"><br>
-        <input type="text" name="FirstName" value="{{ student.FirstName.title() }}" placeholder="First Name"><br>
-        <input type="text" name="Major" value="{{ student.Major.title() }}" placeholder="Major"><br>
-        <input type="text" name="EnrollmentDate" value="{{ student.EnrollmentDate }}" placeholder="EnrollmentDate"><br>
-        <input type="text" name="GraduationDate" value="{{ student.GraduationDate }}" placeholder="GraduationDate"><br>
-        <label>Image : </label><input type="file" name="img"><br>
+        <label>First Name:</label><input type="text" name="FirstName" value="{{ student.FirstName }}" placeholder="First Name"><br>
+        <label>Last Name:</label><input type="text" name="LastName" value="{{ student.LastName }}" placeholder="Last Name"><br>
+
+
+        <label>Major</label>
+        <select id="mjrSelect" name="MajorID">
+
+            {% for major_row in majors %}
+                <option value="{{ major_row[0] }}">{{ major_row[1] }}</option>
+            {% endfor %}
+        </select>
+
+        <label hidden="true"></label>
+        <select id="mjrSelect2" name="MajorID2" hidden="true">
+
+            {% for major_row in studentfind %}
+                <option value="{{ major_row[5] }}">{{ major_row[6] }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Enrollment Date:</label><input type="text" name="EnrollmentDate" id="EnrollmentDate" value="{{ student.EnrollmentDate }}"
+               placeholder="EnrollmentDate"><br>
+        {#        <input type="text" name="GraduationDate" value="{{ student.GraduationDate }}" placeholder="GraduationDate"><br>#}
+        <label>GraduationDate:</label><input type="text" name="GraduationDate" id="graduationDate" value="{{ student.GraduationDate }}"
+               placeholder="Graduation Date" readonly><br>
+
+        <label>Date of Birth:</label><input type="text" name="Dob" id="Dob" value="{{ studentinfo.Dob }}" placeholder="Date Of Birth"><br>
+         <label>Phone:</label><input type="text" name="Phone" id="Phone" value="{{ studentinfo.Phone }}" placeholder="Phone"><br>
+        <label>Address:</label><input type="text" name="Address" id="Address" value="{{ studentinfo.Address }}" placeholder="Address"><br>
+        <label>City:</label><input type="text" name="City" id="City" value="{{ studentinfo.City }}" placeholder="City"><br>
+        <label>State:</label><input type="text" name="State" id="State" value="{{ studentinfo.State }}" placeholder="State"><br>
+        <label>Zipcode:</label><input type="text" name="Zipcode" id="Zipcode" value="{{ studentinfo.Zipcode }}" placeholder="Zipcode"><br>
+        <label>Email:</label><input type="text" name="Email" id="Email" value="{{ studentinfo.Email }}" placeholder="Email"><br>
+
+
         <input type="submit" value="Save Student">
     </form>
+    <script>
+
+
+        // Validate the form before submission
+        function validateForm() {
+            var LastName = document.querySelector('input[name="LastName"]');
+            var FirstName = document.querySelector('input[name="FirstName"]');
+            var MajorID = document.querySelector('#mjrSelect');
+            var Enrollment = document.querySelector('#Enrollment');
+            var Dob = document.querySelector('#Dob');
+            var Phone = document.querySelector('#Phone');
+            var Address = document.querySelector('input[name="Address"]');
+            var City = document.querySelector('input[name="City"]');
+            var State = document.querySelector('#State');
+            var Zipcode = document.querySelector('#Zipcode');
+            var Email = document.querySelector('input[name="Email"]');
+            // Check if any fields are empty or invalid
+            if (!LastName.value || !FirstName.value || !MajorID.value || !Enrollment.value || !Dob.value || !Phone.value || !Address.value || !City.value || !State.value || !Zipcode.value || !Email.value) {
+                alert("Please fill in all the fields.");
+                return false; // Prevent form submission
+            }
+
+
+
+            return true; // Allow form submission
+        }
+
+        // Initialize datepicker on the DOB input field
+        $(document).ready(function () {
+            // Initialize datepicker on the DOB input field
+            $("#dobpicker").datepicker({
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-100:+0"
+            });
+        });
+
+
+        $(document).ready(function () {
+            var selectedValue = $("#mjrSelect2").val();
+            {#var selectedtext = $("#mjrSelect2").text();#}
+            $("#mjrSelect").val(selectedValue);
+            {#$("#mjrSelect").text(selectedtext);#}
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#graduationDate").datepicker({
+                dateFormat: "yy-mm-dd", // Set the desired date format
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    </script>
 {% endblock %}

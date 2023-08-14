@@ -1,0 +1,107 @@
+{#{% extends 'base.html' %}#}
+
+{% block header %}
+    <title>Admin Students</title>
+
+    <!-- Include jQuery from CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include jQuery UI from CDN -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin Students/Information</h1>
+
+    <table style="border: 1px solid black; ">
+        <tr>
+            <th></th>
+
+            <th> First Name</th>
+            <th> Last Name</th>
+            <th> Major</th>
+            <th> EnrollmentDate</th>
+            <th> GraduationDate</th>
+            <th> Date of Birth</th>
+            <th> Phone</th>
+            <th> Address</th>
+            <th> City</th>
+            <th> State</th>
+            <th> Zipcode</th>
+            <th> Email</th>
+
+            {#            <th> Edit |</th>#}
+            {#            <th> Delete |</th>#}
+        </tr>
+        {% for stuitem2 in studentinfo %}
+            <tr>
+                <!-- Table data for each student -->
+                <td><img style="width: 100px" src="/static/img/{{ stuitem2[0] }}.jpg"></td>
+
+                <td>{{ stuitem2[2].title() }}</td>
+                <td>{{ stuitem2[1].title() }}</td>
+                <td>{{ stuitem2[13] }}</td>
+                <td>{{ stuitem2[3] }}</td>
+                <td>{{ stuitem2[4] }}</td>
+                <td>{{ stuitem2[5] }}</td>
+                <td>{{ stuitem2[6] }}</td>
+                <td>{{ stuitem2[7] }}</td>
+                <td>{{ stuitem2[8] }}</td>
+                <td>{{ stuitem2[9] }}</td>
+                <td>{{ stuitem2[10] }}</td>
+                <td>{{ stuitem2[11] }}</td>
+
+                {#                                <td>{{ stuitem2[12] }}</td>#}
+                <td><a href="#" onclick="loadPage('edit-student/{{ stuitem2[0] }}')">Edit</a></td>
+                {#                <td><a href="/admin/dashboard/edit-student/{{ stuitem[0] }}">Edit</a></td>#}
+                <td><a href="#" class="delete-link" data-student-id="{{ stuitem2[0] }}">Delete</a></td>
+
+            </tr>
+
+
+        {% endfor %}
+    </table>
+    <br>
+
+
+
+    <script>
+
+
+        // Function to handle the delete action
+        function deleteStudent(StudentID) {
+            const confirmed = confirm("Are you sure you want to delete this Student?");
+            if (confirmed) {
+                // Submit the form to the delete route
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = `/admin/dashboard/delete-student/${StudentID}`;
+                form.style.display = "none";
+
+                const csrfTokenInput = document.createElement("input");
+                csrfTokenInput.type = "hidden";
+                csrfTokenInput.name = "csrf_token";
+                csrfTokenInput.value = "{{ csrf_token() }}";
+
+                form.appendChild(csrfTokenInput);
+                document.body.appendChild(form);
+
+                form.submit();
+            }
+        }
+
+        // Attach click event to delete links
+        const deleteLinks = document.getElementsByClassName("delete-link");
+        for (const link of deleteLinks) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                const studentID = this.dataset.studentId;
+                deleteStudent(studentID);
+            });
+        }
+    </script>
+
+{% endblock %}

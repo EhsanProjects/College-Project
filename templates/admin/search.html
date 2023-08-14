@@ -1,0 +1,139 @@
+{#{% extends 'base.html' %}#}
+{% block header %}
+    <title>Search Students</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <style>
+        .search-container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .search-container .search-inputs {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .search-container .search-result {
+            flex: 1;
+        }
+
+        #searchResult {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            max-width: 750px; /* Adjust this value to control the maximum width of the frame */
+            margin: 0 auto; /* Center the frame horizontally */
+        }
+
+        #searchResult h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        #searchResult p {
+            margin: 5px 0;
+        }
+
+        #searchResult .info-label {
+            font-weight: bold;
+        }
+
+        #searchResult .not-found {
+            color: #ff0000;
+            background-color: floralwhite;
+        }
+    </style>
+
+    <h1>Search Student ---></h1>
+    <!-- Display search result -->
+    <div class="search-container">
+        <div class="search-inputs">
+            <form action="/admin/dashboard/search_student" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="text" name="firstname" placeholder="First Name">
+                <input type="text" name="lastname" placeholder="Last Name">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <div class="search-result">
+            <!-- Display search result in the smaller frame -->
+            <div id="searchResult"></div>
+
+        </div>
+    </div>
+
+
+    <script>
+        // Function to handle the form submission and AJAX request
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: $(this).attr("method"),
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.StudentID) {
+                            // If the student is found, display the result in a user-friendly table
+                            var table = "<table>" +
+                                "<tr><th>Photo</th><td><img src='" + response.PhotoURL + "' style='width: 100px;' /></td></tr>" +
+                                "<tr><th>Student ID</th><td>" + response.StudentID + "</td></tr>" +
+                                "<tr><th>Last Name</th><td>" + response.LastName + "</td></tr>" +
+                                "<tr><th>First Name</th><td>" + response.FirstName + "</td></tr>" +
+                                "<tr><th>Enrollment Date</th><td>" + response.EnrollmentDate + "</td></tr>" +
+                                "<tr><th>Graduation Date</th><td>" + response.GraduationDate + "</td></tr>" +
+                                "<tr><th>Major</th><td>" + response.MajorName + "</td></tr>" +
+                                "<tr><th>Date Of Birth</th><td>" + response.Dob + "</td></tr>" +
+                                "<tr><th>Phone Number</th><td>" + response.Phone + "</td></tr>" +
+                                "<tr><th>Address</th><td>" + response.Address + "</td></tr>" +
+                                "<tr><th>City</th><td>" + response.City + "</td></tr>" +
+                                "<tr><th>State</th><td>" + response.State + "</td></tr>" +
+                                "<tr><th>ZipCode</th><td>" + response.Zipcode + "</td></tr>" +
+                                "<tr><th>Email</th><td>" + response.Email + "</td></tr>" +
+                                "<tr><th>Courses</th><td>" + "</td></tr>" +
+                                "<tr><th></th><td>" + "</td></tr>" +
+                                "<tr><th>Course Number</th><th>Course Name</th><th>Credit Hours</th></tr>" + // Add the title row
+
+                                "<tr><td>" + formatCourses(response.CourseIDs, response.CourseNumbers, response.CourseNames, response.CourseUnits) + "</td></tr>" +
+                                "<tr><th></th><td>" + "</td></tr>" +
+                                "<tr><th>Total Course Units</th><td>" + response.TotalCourseUnits +  " <th>Credit Hours</th></td></tr>" +
+
+                                // Add other student information here
+                                // Example: "<tr><th>Email</th><td>" + response.Email + "</td></tr>" +
+                                "</table>";
+
+                            $("#searchResult").html(table);
+                        } else {
+                            // If the student is not found, display a message
+                            $("#searchResult").html("<p class='not-found'>No student found with the given name.</p>");
+                        }
+                    },
+                    error: function (error) {
+                        $("#searchResult").html("<p class='not-found'>An error occurred. Please try again later.</p>");
+                    }
+                });
+            });
+        });
+
+        // Helper function to format the courses as a list
+        function formatCourses(courseIDs, courseNumbers, courseNames, courseUnits) {
+            var courses = [];
+
+            for (var i = 0; i < courseIDs.length; i++) {
+                var course = "<tr><td>&#10004; " + courseNumbers[i] + "</td><td>" + courseNames[i] + "</td><td>" + courseUnits[i] + "</td></tr>";
+                courses.push(course);
+            }
+            return courses.join("<br>");
+        }
+    </script>
+{% endblock %}

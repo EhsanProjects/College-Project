@@ -1,16 +1,32 @@
-{% extends 'base.html' %}
 {% block header %}
     <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 {% endblock %}
 
 {% block body %}
-    <h1>Admin Login</h1>
-    <form action="#" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <input type="text" name="username" placeholder="username"><br>
-        <input type="password" name="password" placeholder="password"><br>
-        <input type="submit" value="submit">
-    </form>
+    <div class="login-container">
+        <div class="login-form">
+            <h1>Admin Login</h1>
+            <form action="#" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-container">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter your username">
+                </div>
+                <div class="input-container">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password">
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div class="login-info">
+            <div class="message">
+                <p>Welcome to Admin Portal</p>
+            </div>
+            <div class="photo">
+                <img src="{{ url_for('static', filename='login-photo.jpg') }}" alt="Login Photo">
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
-

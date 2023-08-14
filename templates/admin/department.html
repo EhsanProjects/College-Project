@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+
 {% block header %}
     <title>Admin Departments</title>
 {% endblock %}
@@ -11,19 +11,71 @@
         <tr>
             <th>Department Name |</th>
             <th> Edit |</th>
+            <th> Delete |</th>
         </tr>
         {% for deptitem in departments %}
             <tr>
                 <td>{{ deptitem.DepartmentName.title() }}</td>
-                <td><a href="/admin/dashboard/edit-department/{{ deptitem.DepartmentID }}">Edit</a></td>
+
+                <td> <a href="#" onclick="loadPage('edit-department/{{ deptitem.DepartmentID }}')">Edit</a></td>
+                <td><a href="#" class="delete-link" data-dept-id="{{ deptitem.DepartmentID }}">Delete</a></td>
             </tr>
         {% endfor %}
     </table>
     <br>
 
-    <form action="#" method="post">
+    <form action="/admin/dashboard/departments" method="post" onsubmit="return validateForm();">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="text" name="DepartmentName" placeholder="Department Name"><br>
         <input type="submit" value="Add">
     </form>
+
+    <script>
+    function validateForm() {
+
+         var DepartmentName = document.querySelector('input[name="DepartmentName"]');
+
+        // Check if any fields are empty or invalid
+        if (!DepartmentName.value ) {
+            alert("Please fill in Department Name field.");
+            return false; // Prevent form submission
+        }
+
+
+
+        return true; // Allow form submission
+    }
+    // Function to handle the delete action
+    function deleteDept(departmentID) {
+        const confirmed = confirm("Are you sure you want to delete this Department?");
+        if (confirmed) {
+            // Submit the form to the delete route
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = `/admin/dashboard/delete-dept/${departmentID}`;
+            form.style.display = "none";
+
+            const csrfTokenInput = document.createElement("input");
+            csrfTokenInput.type = "hidden";
+            csrfTokenInput.name = "csrf_token";
+            csrfTokenInput.value = "{{ csrf_token() }}";
+
+            form.appendChild(csrfTokenInput);
+            document.body.appendChild(form);
+
+            form.submit();
+        }
+    }
+
+    // Attach click event to delete links
+    const deleteLinks = document.getElementsByClassName("delete-link");
+    for (const link of deleteLinks) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            const deptID = this.dataset.deptId;
+            deleteDept(deptID);
+        });
+    }
+</script>
+
 {% endblock %}

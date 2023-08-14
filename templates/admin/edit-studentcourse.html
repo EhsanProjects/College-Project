@@ -1,0 +1,20 @@
+{#{% extends 'base.html' %}#}
+{% block header %}
+    <title>Admin: Edit --> Students' Courses</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin: Edit --> Students' Courses</h1>
+    <td><img style="width: 100px"  src="/static/img/{{ student.StudentID }}.jpg"></td>
+    <form action="#" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="text" name="LastName" value="{{ student.LastName.title() }}" placeholder="Last Name"><br>
+        <input type="text" name="FirstName" value="{{ student.FirstName.title() }}" placeholder="First Name"><br>
+        <input type="text" name="Major" value="{{ student.Major.title() }}" placeholder="Major"><br>
+        <input type="text" name="EnrollmentDate" value="{{ student.EnrollmentDate }}" placeholder="EnrollmentDate"><br>
+        <input type="text" name="GraduationDate" value="{{ student.GraduationDate }}" placeholder="GraduationDate"><br>
+        <label>Image : </label><input type="file" name="img"><br>
+        <input type="submit" value="Save Student's coursessss">
+    </form>
+{% endblock %}

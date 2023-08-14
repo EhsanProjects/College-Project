@@ -1,0 +1,36 @@
+{% block header %}
+    <title>Admin: Edit --> Major</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Admin: Edit --> Major</h1>
+
+    <form action="/admin/dashboard/edit-major/{{ major.MajorID }}" method="post" onsubmit="return validateForm();">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <input type="text" name="MajorName" value="{{ major.MajorName.title() }}"
+               placeholder="Major Name"><br>
+        <input type="submit" value="Save Major">
+    </form>
+
+    <script>
+    function validateForm() {
+
+         var MajorName = document.querySelector('input[name="MajorName"]');
+
+        // Check if any fields are empty or invalid
+        if (!MajorName.value ) {
+            alert("Please fill in Department Name field.");
+            return false; // Prevent form submission
+        }
+
+
+
+        return true; // Allow form submission
+    }
+    </script>
+{% endblock %}
+
+
+
+

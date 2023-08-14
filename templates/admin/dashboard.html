@@ -4,11 +4,46 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Admin Dashboard</h1>
-    <a href="/admin/dashboard/departments">Department__Page</a><br><br><br>
-    <a href="/admin/dashboard/students">Student__Page</a><br><br><br>
-    <a href="/admin/dashboard/courses">Courses__Page</a><br><br><br>
-    <a href="/admin/dashboard/instructors">Instructors__Page</a><br><br><br>
-    <a href="/admin/dashboard/studentcourses">StudentCourses__Page</a><br><br><br>
+    <div class="welcome-logout-container">
+        <div class="welcome-message">
+            Welcome, {{ session.admin_login }}!
+        </div>
+        <a href="{{ url_for('admin.logout') }}" class="logout-link">
+            <img src="/static/img/Website/logout.png" alt="Logout" class="logout-icon">
+            Logout
+        </a>
+    </div>
+
+    <div class="scrollmenu">
+        <a href="#" onclick="loadPage('majors')">Majors</a>
+        <a href="#" onclick="loadPage('departments')">Departments</a>
+        <a href="#" onclick="loadPage('students')">Enter Students/Information</a>
+        <a href="#" onclick="loadPage('studentinfo')">Show Students/Information</a>
+        <a href="#" onclick="loadPage('instructors')">Instructors</a>
+        <a href="#" onclick="loadPage('courses')">Courses</a>
+        <a href="#" onclick="loadPage('studentcourses')">Student-->>Courses</a>
+        <a href="#" onclick="loadPage('search_student')">Search</a>
+    </div>
+    <div class="content-container">
+        <div class="menu-column">
+            <a href="#" onclick="loadPage('majors')">Majors</a>
+            <a href="#" onclick="loadPage('departments')">Departments</a>
+            <a href="#" onclick="loadPage('students')">Enter Students/Information</a>
+            <a href="#" onclick="loadPage('studentinfo')">Show Students/Information</a>
+            <a href="#" onclick="loadPage('instructors')">Instructors</a>
+            <a href="#" onclick="loadPage('courses')">Courses</a>
+            <a href="#" onclick="loadPage('studentcourses')">Student-->>Courses</a>
+            <a href="#" onclick="loadPage('search_student')">Search</a>
+        </div>
+
+        <div class="news-column" id="newsColumn">
+        </div>
+
+
+    </div>
+
+    <div class="programmer-info">
+        Developed by Mohammadehsan Heidarian. @Summer 2023
+    </div>
 {% endblock %}
 
